@@ -1,0 +1,6 @@
+# Build + test artifacts (dist is also covered by the root .gitignore; coverage is not).
+dist/
+coverage/
+
+# Local env overrides — never commit real credentials. .env.example is the committed template.
+.env

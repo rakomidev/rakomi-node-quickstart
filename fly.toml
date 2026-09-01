@@ -1,0 +1,37 @@
+# Rakomi Node/Express quickstart — Fly.io app configuration.
+#
+# Deploy: fly launch --no-deploy (first time, to create the app + register this file), then
+#   fly secrets set RAKOMI_API_KEY=... RAKOMI_CLIENT_ID=... RAKOMI_CLIENT_SECRET=...
+#   fly deploy
+#
+# RAKOMI_REDIRECT_URI is NOT a secret (it is a public OAuth parameter, visible in the browser's
+# address bar during sign-in) — set it in [env] below once you know your app's fly.dev hostname,
+# or pass it as a build/deploy-time override. It MUST exactly match a redirect URI registered
+# for this OAuth client in the Rakomi dashboard.
+app = "rakomi-node-quickstart"
+primary_region = "fra"
+
+[build]
+
+[env]
+  PORT = "3000"
+  # RAKOMI_REDIRECT_URI = "https://rakomi-node-quickstart.fly.dev/callback"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+  [http_service.checks]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
